@@ -59,7 +59,7 @@ function App() {
     });
 
     return (
-        <div style={ {textAlign: 'center', width: '500px', margin: '0 auto'}}>
+        <div style={ {textAlign: 'center', width: '400px',padding: '0 30px',paddingBottom:'40px', margin: '0 auto', border:'.5px solid #ccc'}}>
             <h2>To Do List Input</h2>
             <div style = {{
                 display: "grid",gridTemplateColumns : 'repeat(1, 1fr)',
@@ -97,23 +97,30 @@ function App() {
             <h2>To Do List</h2>
 
             <div>
-                {["All", "Done", "ToDo"].map(f => (
-                    <button
-                        key={f}
-                        onClick={() => setFilter(f)}
-                        style={{
-                            width: '153px',
-                            padding: "8px 16px",
-                            background: filter === f ? "#007799" : "#00aabb",
-                            color: "#fff",
-                            marginBottom: "10px",
-                            border: "1px solid",
-                            borderRadius: "4px"
-                        }}
-                    >
-                        {f}
-                    </button>
-                ))}
+                <div style = {{
+                    display: "grid",
+                    gridTemplateColumns: "repeat(3, 1fr)", // 3 cột, mỗi cột chia đều
+                    gap: 8,
+                    marginBottom: "10px"}}>
+                    {["All", "Done", "ToDo"].map(f => (
+                        <button
+                            key={f}
+                            onClick={() => setFilter(f)}
+                            style={{
+                                width: 'auto',
+                                padding: "8px 16px",
+                                background: filter === f ? "#007799" : "#00aabb",
+                                color: "#fff",
+                                marginBottom: "10px",
+                                border: "1px solid",
+                                borderRadius: "4px"
+                            }}
+                        >
+                            {f}
+                        </button>
+                    ))}
+                </div>
+
                 <div
                     style={{
                     alignItems: "center",
