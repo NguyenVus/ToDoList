@@ -1,10 +1,11 @@
 import React from 'react';
 import ReactDOM from 'react-dom/client';
 import './index.css';
-import App from './App';
-import Caculates from './View/Caculates';
+// import App from './App';
+// import Caculates from './View/Caculates';
 import reportWebVitals from './reportWebVitals';
 import ToDoList from "./View/ToDoList";
+// import CaculateBMI from "./View/CaculateBMI";
 
 const root = ReactDOM.createRoot(document.getElementById('root'));
 root.render(
@@ -12,6 +13,7 @@ root.render(
     {/*<App />*/}
     {/*  <Caculates />*/}
       <ToDoList/>
+      {/*<CaculateBMI/>*/}
   </React.StrictMode>
 );
 

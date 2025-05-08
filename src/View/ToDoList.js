@@ -1,9 +1,13 @@
 import {useState, useEffect} from "react";
 
+
 function App() {
     const [tasks , setTasks] = useState([]);
     const [input , setInput] = useState('');
     const [filter, setFilter] = useState('All');
+    const [editIndex, setEditIndex] = useState(null);
+    const [editText, setEditText] = useState('');
+
     useEffect(() => {
         const savedTasks = localStorage.getItem("tasks");
         if (savedTasks) {
@@ -36,21 +40,31 @@ function App() {
 
     const handleDelete = (index) => {
         setTasks(tasks.filter((_, i) => i !== index));
+        localStorage.removeItem("tasks");
     };
     const deleteDoneTasks = () => {
         setTasks(tasks.filter(task => !task.completed));
+        localStorage.removeItem("tasks");
     };
     const deleteAllTasks = () => {
         setTasks([]);
+        localStorage.clear();
     };
     const handleEdit = (index) => {
-        const newText = prompt("Edit task:", tasks[index].text);
-        if (newText !== null && newText.trim() !== '') {
+        setEditIndex(index);
+        setEditText(tasks[index].text);
+    };
+
+    const handleSaveEdit = (index) => {
+        if (editText.trim() !== '') {
             setTasks(tasks.map((task, i) =>
-                i === index ? { ...task, text: newText.trim() } : task
+                i === index ? { ...task, text: editText.trim() } : task
             ));
         }
-    }
+        setEditIndex(null);
+        setEditText('');
+    };
+
     const filteredTasks = tasks.filter(task => {
         if (filter === "All") return true;
         if (filter === "Done") return task.completed;
@@ -90,7 +104,7 @@ function App() {
                             borderRadius: "4px", }}
                     />
                 </div>
-                <button onClick={handleAdd} style={{ padding: "8px 16px", background: "#00aabb", color: "#fff", border: "none" }}>
+                <button onClick={handleAdd} style={{ padding: "8px 16px", background: "#00aabb", color: "#fff", border: "none",cursor:"pointer" }}>
                     Add new task
                 </button>
             </div>
@@ -113,7 +127,8 @@ function App() {
                                 color: "#fff",
                                 marginBottom: "10px",
                                 border: "1px solid",
-                                borderRadius: "4px"
+                                borderRadius: "4px",
+                                 cursor: "pointer"
                             }}
                         >
                             {f}
@@ -133,31 +148,62 @@ function App() {
                         <div key={index} style={{
                             display: "flex",
                             justifyContent: "space-between",
-                            alignItems: "center",
+                            alignItems: "left",
                             background: "#fbfbfb",
-                            padding: "10px",
-                            marginBottom: "10px",
+                            padding: "15px",
+                            marginBottom: "20px",
                             border: "1px solid #ccc",
                             borderRadius: "4px",
                         }}>
-                            <div style={{ textDecoration: task.completed ? "line-through" : "none", color: task.completed ? "gray" : "black" }}>
-                                {task.text}
-                            </div>
+                            {editIndex === index ? (
+                                <input
+                                    type="text"
+                                    value={editText}
+                                    onChange={(e) => setEditText(e.target.value)}
+                                    onBlur={() => handleSaveEdit(index)}
+                                    onKeyDown={(e) => {
+                                        if (e.key === "Enter") handleSaveEdit(index);
+                                    }}
+                                    autoFocus
+                                    style={{ flex: 1, padding: "10px", fontSize: "14px" }}
+                                />
+                            ) : (
+                                <div
+                                    style={{
+                                        textDecoration: task.completed ? "line-through" : "none",
+                                        color: task.completed ? "gray" : "black",
+                                        overflowX: "auto",
+                                        whiteSpace: "nowrap",
+                                        maxWidth: "auto",
+                                        textAlign: "left",
+                                        scrollbarWidth: "none",
+                                        msOverflowStyle: "none",
+                                        padding: "10px",
+                                        border: "1px solid #ccc",
+
+                                    }}
+                                >
+                                    {task.text}
+                                </div>
+                            )}
+
                             <div style={{ display: "flex", alignItems: "center", gap: 10 }}>
                                 <input
                                     type="checkbox"
+                                    style={{ marginLeft: "10px" }}
+                                    value='checked'
                                     checked={task.completed}
                                     onChange={() => handleCheck(index)}
                                 />
                                 <button
                                     onClick={() => handleEdit(index)}
-                                    style={{ background: "#ffaa00", color: "white", border: "none", borderRadius: "4px", padding: "5px 10px" }}
+                                    style={{ background: "#ffaa00", color: "white", border: "none", borderRadius: "4px", padding: "5px 10px", cursor: "pointer" }}
                                 >
                                     ✏️
                                 </button>
                                 <button
                                     onClick={() => handleDelete(index)}
-                                    style={{ background: "crimson", color: "white", border: "none", borderRadius: "4px", padding: "5px 10px" }}
+                                    style={{ background: "crimson", color: "white", border: "none", borderRadius: "4px", padding: "5px 10px" ,cursor: "pointer" }}
                                 >
                                     🗑️
                                 </button>
@@ -165,10 +211,10 @@ function App() {
                         </div>
                     ))}
                     <div style={{  display: "flex", gap: 50, justifyContent: "center" }}>
-                        <button onClick={deleteDoneTasks} style ={{ width:'225px',marginBottom: "10px", padding: "10px 20px", background: "crimson", color: "white", border: "none", borderRadius: 4}}>
+                        <button onClick={deleteDoneTasks} style ={{ width:'225px',marginBottom: "10px", padding: "10px 20px", background: "crimson", color: "white", border: "none", borderRadius: 4,cursor: "pointer" }}>
                             DeleteDoneTask
                         </button>
-                        <button onClick={deleteAllTasks} style = {{ width:'225px',marginBottom: "10px", padding: "10px 20px", background: "crimson", color: "white", border: "none", borderRadius: 4}} >
+                        <button onClick={deleteAllTasks} style = {{ width:'225px',marginBottom: "10px", padding: "10px 20px", background: "crimson", color: "white", border: "none", borderRadius: 4, cursor: "pointer"}} >
                             DeleteAllTask
                         </button>
                     </div>
