@@ -18,9 +18,12 @@ function App() {
             }
         }
     }, []);
+
     useEffect(() => {
         if (tasks.length > 0) {
             localStorage.setItem("tasks", JSON.stringify(tasks));
+        } else {
+            localStorage.removeItem("tasks");
         }
     }, [tasks]);
 
@@ -40,16 +43,17 @@ function App() {
 
     const handleDelete = (index) => {
         setTasks(tasks.filter((_, i) => i !== index));
-        localStorage.removeItem("tasks");
     };
+
     const deleteDoneTasks = () => {
         setTasks(tasks.filter(task => !task.completed));
-        localStorage.removeItem("tasks");
     };
+
     const deleteAllTasks = () => {
         setTasks([]);
         localStorage.clear();
     };
+
     const handleEdit = (index) => {
         setEditIndex(index);
         setEditText(tasks[index].text);
@@ -73,7 +77,14 @@ function App() {
     });
 
     return (
-        <div style={ {textAlign: 'center', width: '400px',padding: '0 30px',paddingBottom:'40px', margin: '0 auto', border:'.5px solid #ccc'}}>
+        <div style={{
+            textAlign: 'center',
+            width: '400px',
+            padding: '0 30px',
+            paddingBottom:'40px',
+            margin: '0 auto',
+            border:'.5px solid #ccc'}}
+        >
             <h2>To Do List Input</h2>
             <div style = {{
                 display: "grid",gridTemplateColumns : 'repeat(1, 1fr)',
@@ -84,7 +95,9 @@ function App() {
                 border: "1px solid #ccc",
                 borderRadius: "4px",
                 flex: 1}}>
-                <div style={{ display: "flex", alignItems: "center" }}>
+                <div style={{
+                    display: "flex",
+                    alignItems: "center" }}>
                     <div style={{gap: 8,
                         padding: "8px",
                         border: "1px solid #ccc",
@@ -98,13 +111,21 @@ function App() {
                         value={input}
                         onChange={(e) => setInput(e.target.value)}
                         placeholder="New Todo"
-                        style={{ flex: 1,
+                        style={{
+                            flex: 1,
                             padding: "10px",
                             border: "1px solid #ccc",
                             borderRadius: "4px", }}
                     />
                 </div>
-                <button onClick={handleAdd} style={{ padding: "8px 16px", background: "#00aabb", color: "#fff", border: "none",cursor:"pointer" }}>
+                <button
+                    onClick={handleAdd}
+                    style={{
+                        padding: "8px 16px",
+                        background: "#00aabb",
+                        color: "#fff", border: "none",
+                        cursor:"pointer" }}
+                >
                     Add new task
                 </button>
             </div>
@@ -165,7 +186,10 @@ function App() {
                                         if (e.key === "Enter") handleSaveEdit(index);
                                     }}
                                     autoFocus
-                                    style={{ flex: 1, padding: "10px", fontSize: "14px" }}
+                                    style={{
+                                        flex: 1,
+                                        padding: "10px",
+                                        fontSize: "14px" }}
                                 />
                             ) : (
                                 <div
@@ -187,7 +211,12 @@ function App() {
                                 </div>
                             )}
 
-                            <div style={{ display: "flex", alignItems: "center", gap: 10 }}>
+                            <div
+                                style={{
+                                    display: "flex",
+                                    alignItems: "center",
+                                    gap: 10 }}
+                            >
                                 <input
                                     type="checkbox"
                                     style={{ marginLeft: "10px" }}
@@ -210,11 +239,35 @@ function App() {
                             </div>
                         </div>
                     ))}
-                    <div style={{  display: "flex", gap: 50, justifyContent: "center" }}>
-                        <button onClick={deleteDoneTasks} style ={{ width:'225px',marginBottom: "10px", padding: "10px 20px", background: "crimson", color: "white", border: "none", borderRadius: 4,cursor: "pointer" }}>
+                    <div style={{
+                        display: "flex",
+                        gap: 50,
+                        justifyContent: "center" }}
+                    >
+                        <button
+                            onClick={deleteDoneTasks}
+                            style ={{
+                                width:'225px',
+                                marginBottom: "10px",
+                                padding: "10px 20px",
+                                background: "crimson",
+                                color: "white",
+                                border: "none",
+                                borderRadius: 4,
+                                cursor: "pointer" }}>
                             DeleteDoneTask
                         </button>
-                        <button onClick={deleteAllTasks} style = {{ width:'225px',marginBottom: "10px", padding: "10px 20px", background: "crimson", color: "white", border: "none", borderRadius: 4, cursor: "pointer"}} >
+                        <button
+                            onClick={deleteAllTasks}
+                            style = {{
+                                width:'225px',
+                                marginBottom: "10px",
+                                padding: "10px 20px",
+                                background: "crimson",
+                                color: "white",
+                                border: "none",
+                                borderRadius: 4,
+                                cursor: "pointer"}} >
                             DeleteAllTask
                         </button>
                     </div>
