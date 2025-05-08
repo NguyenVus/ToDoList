@@ -203,8 +203,6 @@ function App() {
                                         scrollbarWidth: "none",
                                         msOverflowStyle: "none",
                                         padding: "10px",
-                                        border: "1px solid #ccc",
-
                                     }}
                                 >
                                     {task.text}
